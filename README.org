@@ -1,5 +1,7 @@
 * MagnumImGui
 
+  You can try MagnumImGui here [[https://lecopivo.github.io/MagnumImguiPort/][here]].
+
   To use =MagnumImGui= you need to have [[https://github.com/mosra/magnum][Magnum]] on you machine.
 
 ** Installation guide
