@@ -1,4 +1,5 @@
 # Build library
+
 file(GLOB ImGui_SRC "../imgui/*.cpp")
 
 add_library(MagnumImGui MagnumImGui.cpp ${ImGui_SRC} ${MagnumImGuiShaders_RCS})
