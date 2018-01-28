@@ -34,8 +34,6 @@
 
 #include "../imgui/imgui.h"
 
-#include <iostream>
-
 using namespace Magnum;
 
 void MagnumImgui::init() {
