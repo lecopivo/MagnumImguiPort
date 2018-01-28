@@ -87,8 +87,8 @@ public:
 private:
   ImguiShader mShader;
   Magnum::Texture2D mTexture;
-  Magnum::Buffer mVertexBuffer;
-  Magnum::Buffer mIndexBuffer;
+  Magnum::Buffer mVertexBuffer{Magnum::Buffer::TargetHint::Array};
+  Magnum::Buffer mIndexBuffer{Magnum::Buffer::TargetHint::ElementArray};
   Magnum::Timeline mTimeline;
   Magnum::Mesh mMesh;
 
