@@ -16,3 +16,16 @@ target_link_libraries(Example
   Magnum::Magnum
   Magnum::Shaders
   MagnumImGui)
+
+if(CORRADE_TARGET_EMSCRIPTEN)
+    install(TARGETS Example DESTINATION ${CMAKE_INSTALL_PREFIX})
+    install(FILES
+        Example.html
+        EmscriptenApplication.js
+        WebApplication.css
+        DESTINATION ${CMAKE_INSTALL_PREFIX})
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/Exmaple.js.mem
+        ${CMAKE_CURRENT_BINARY_DIR}/Example.wasm
+        DESTINATION ${CMAKE_INSTALL_PREFIX} OPTIONAL)
+endif()
