@@ -29,7 +29,8 @@ Example::Example(const Arguments &arguments)
     : Platform::Application{
           arguments, Configuration{}
                          .setTitle("Magnum Imgui port")
-                         .setWindowFlags(Configuration::WindowFlag::Resizable)} {}
+                         .setWindowFlags(Configuration::WindowFlag::Resizable)
+                         .setSize({1280, 960})} {}
 
 void Example::drawEvent() {
   Renderer::setClearColor(

@@ -60,29 +60,29 @@ private:
 };
 
 
-class MagnumImgui
+class MagnumImGui
 {
 public:
-  MagnumImgui();
-  ~MagnumImgui();
+  MagnumImGui();
+  ~MagnumImGui();
 
   void newFrame(const Magnum::Vector2i &winSize, const Magnum::Vector2i &viewportSize);
 
   void drawFrame();
 
-  void mousePressEvent(const Magnum::Platform::Application::MouseEvent& event);
+  bool mousePressEvent(const Magnum::Platform::Application::MouseEvent& event);
 
-  void mouseReleaseEvent(const Magnum::Platform::Application::MouseEvent& event);
+  bool mouseReleaseEvent(const Magnum::Platform::Application::MouseEvent& event);
 
-  void mouseScrollEvent(const Magnum::Platform::Application::MouseScrollEvent& event);
+  bool mouseScrollEvent(const Magnum::Platform::Application::MouseScrollEvent& event);
 
-  void mouseMoveEvent(const Magnum::Platform::Application::MouseMoveEvent& event);
+  bool mouseMoveEvent(const Magnum::Platform::Application::MouseMoveEvent& event);
 
-  void keyPressEvent(const Magnum::Platform::Application::KeyEvent& event);
+  bool keyPressEvent(const Magnum::Platform::Application::KeyEvent& event);
 
-  void keyReleaseEvent(const Magnum::Platform::Application::KeyEvent& event);
+  bool keyReleaseEvent(const Magnum::Platform::Application::KeyEvent& event);
 
-  void textInputEvent(const Magnum::Platform::Application::TextInputEvent& event);
+  bool textInputEvent(const Magnum::Platform::Application::TextInputEvent& event);
 
 private:
   ImguiShader mShader;
@@ -100,8 +100,8 @@ private:
   void init();
   void load();
 
-  void keyPressReleaseEvent(const Magnum::Platform::Application::KeyEvent& event, bool value);
-  void mousePressReleaseEvent(const Magnum::Platform::Application::MouseEvent& event, bool value);
+  bool keyPressReleaseEvent(const Magnum::Platform::Application::KeyEvent& event, bool value);
+  bool mousePressReleaseEvent(const Magnum::Platform::Application::MouseEvent& event, bool value);
 };
 
 

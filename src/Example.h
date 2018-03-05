@@ -58,7 +58,7 @@ public:
   void textInputEvent(TextInputEvent& event) override;
 
 private:
-  MagnumImgui mMagnumImgui;
+  MagnumImGui mMagnumImgui;
 
   bool show_test_window = true;
   bool show_another_window = false;
