@@ -36,7 +36,7 @@
 
 using namespace Magnum;
 
-void MagnumImgui::init() {
+void MagnumImGui::init() {
   ImGuiIO &io                    = ImGui::GetIO();
   io.KeyMap[ImGuiKey_Tab]        = ImGuiKey_Tab;
   io.KeyMap[ImGuiKey_LeftArrow]  = ImGuiKey_LeftArrow;
@@ -64,7 +64,7 @@ void MagnumImgui::init() {
   mTimeline.start();
 }
 
-void MagnumImgui::load() {
+void MagnumImGui::load() {
   ImGuiIO &      io = ImGui::GetIO();
   unsigned char *pixels;
   int            width, height;
@@ -90,7 +90,7 @@ void MagnumImgui::load() {
                          ImguiShader::Color::DataOption::Normalized));
 }
 
-void MagnumImgui::keyPressReleaseEvent(
+bool MagnumImGui::keyPressReleaseEvent(
     const Platform::Application::KeyEvent &event, bool value) {
   ImGuiIO &io = ImGui::GetIO();
 
@@ -163,9 +163,11 @@ void MagnumImgui::keyPressReleaseEvent(
   default:
     break;
   }
+
+  return io.WantCaptureKeyboard;
 }
 
-void MagnumImgui::mousePressReleaseEvent(
+bool MagnumImGui::mousePressReleaseEvent(
     const Platform::Application::MouseEvent &event, bool value) {
   switch (event.button()) {
   case Magnum::Platform::Application::MouseEvent::Button::Left:
@@ -180,16 +182,17 @@ void MagnumImgui::mousePressReleaseEvent(
   default:
     break;
   }
+  return ImGui::GetIO().WantCaptureMouse;
 }
 
-MagnumImgui::MagnumImgui() {
+MagnumImGui::MagnumImGui() {
   init();
   load();
 }
 
-MagnumImgui::~MagnumImgui() { ImGui::Shutdown(); }
+MagnumImGui::~MagnumImGui() { ImGui::Shutdown(); }
 
-void MagnumImgui::newFrame(const Vector2i &winSize,
+void MagnumImGui::newFrame(const Vector2i &winSize,
                            const Vector2i &viewportSize) {
   mTimeline.nextFrame();
 
@@ -214,7 +217,7 @@ void MagnumImgui::newFrame(const Vector2i &winSize,
   ImGui::NewFrame();
 }
 
-void MagnumImgui::drawFrame() {
+void MagnumImGui::drawFrame() {
   ImGui::Render();
 
   ImGuiIO &io        = ImGui::GetIO();
@@ -278,79 +281,85 @@ void MagnumImgui::drawFrame() {
   }
 
   Renderer::disable(Renderer::Feature::ScissorTest);
+  Renderer::enable(Renderer::Feature::FaceCulling);
+  Renderer::enable(Renderer::Feature::DepthTest);
 }
 
-void MagnumImgui::mousePressEvent(
+bool MagnumImGui::mousePressEvent(
     const Platform::Application::MouseEvent &event) {
-  mousePressReleaseEvent(event, true);
+  return mousePressReleaseEvent(event, true);
 }
 
-void MagnumImgui::mouseReleaseEvent(
+bool MagnumImGui::mouseReleaseEvent(
     const Platform::Application::MouseEvent &event) {
-  mousePressReleaseEvent(event, false);
+  return mousePressReleaseEvent(event, false);
 }
 
-void MagnumImgui::mouseScrollEvent(
+bool MagnumImGui::mouseScrollEvent(
     const Platform::Application::MouseScrollEvent &event) {
   mMouseScroll += event.offset().y();
+  return false;
 }
 
-void MagnumImgui::mouseMoveEvent(
+bool MagnumImGui::mouseMoveEvent(
     const Platform::Application::MouseMoveEvent &event) {
   mMousePos = event.position();
+  return ImGui::GetIO().WantCaptureMouse;
 }
 
-void MagnumImgui::keyPressEvent(const Platform::Application::KeyEvent &event) {
-  keyPressReleaseEvent(event, true);
+bool MagnumImGui::keyPressEvent(const Platform::Application::KeyEvent &event) {
+  return keyPressReleaseEvent(event, true);
 }
 
-void MagnumImgui::keyReleaseEvent(
+bool MagnumImGui::keyReleaseEvent(
     const Platform::Application::KeyEvent &event) {
-  keyPressReleaseEvent(event, false);
+  return keyPressReleaseEvent(event, false);
 }
 
-void MagnumImgui::textInputEvent(
+bool MagnumImGui::textInputEvent(
     const Platform::Application::TextInputEvent &event) {
   ImGuiIO &io = ImGui::GetIO();
   io.AddInputCharactersUTF8(event.text().data());
+  return false;
 }
 
 ImguiShader::ImguiShader() {
 
-  const char *vertex_shader = "#ifndef NEW_GLSL\n"
-                              "#define in attribute\n"
-                              "#define out varying\n"
-                              "#endif\n"
-                              "\n"
-                              "#ifdef EXPLICIT_UNIFORM_LOCATION\n"
-                              "layout(location = 0)\n"
-                              "#endif\n"
-                              "  uniform mediump mat4 ProjMtx;\n"
-                              "\n"
-                              "#ifdef EXPLICIT_ATTRIB_LOCATION\n"
-                              "layout(location = 0)\n"
-                              "#endif\n"
-                              "  in mediump vec2 Position;\n"
-                              "\n"
-                              "#ifdef EXPLICIT_ATTRIB_LOCATION\n"
-                              "layout(location = 1)\n"
-                              "#endif\n"
-                              "  in mediump  vec2 UV;\n"
-                              "\n"
-                              "#ifdef EXPLICIT_ATTRIB_LOCATION\n"
-                              "layout(location = 2)\n"
-                              "#endif\n"
-                              "  in mediump vec4 Color;\n"
-                              "\n"
-                              "out mediump vec2 Frag_UV;\n"
-                              "out mediump vec4 Frag_Color;\n"
-                              "\n"
-                              "void main()\n"
-                              "{\n"
-                              "  Frag_UV = UV;\n"
-                              "  Frag_Color = Color;\n"
-                              "  gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
-                              "}\n";
+  const char *vertex_shader =
+      "#ifndef NEW_GLSL\n"
+      "#define in attribute\n"
+      "#define out varying\n"
+      "#endif\n"
+      "\n"
+      "#ifdef EXPLICIT_UNIFORM_LOCATION\n"
+      "layout(location = 0)\n"
+      "#endif\n"
+      "  uniform mediump mat4 ProjMtx;\n"
+      "\n"
+      "#ifdef EXPLICIT_ATTRIB_LOCATION\n"
+      "layout(location = 0)\n"
+      "#endif\n"
+      "  in mediump vec2 Position;\n"
+      "\n"
+      "#ifdef EXPLICIT_ATTRIB_LOCATION\n"
+      "layout(location = 1)\n"
+      "#endif\n"
+      "  in mediump  vec2 UV;\n"
+      "\n"
+      "#ifdef EXPLICIT_ATTRIB_LOCATION\n"
+      "layout(location = 2)\n"
+      "#endif\n"
+      "  in mediump vec4 Color;\n"
+      "\n"
+      "out mediump vec2 Frag_UV;\n"
+      "out mediump vec4 Frag_Color;\n"
+      "\n"
+      "void main()\n"
+      "{\n"
+      "  Frag_UV = UV;\n"
+      "  Frag_Color = Color;\n"
+      "  gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
+      "}\n";
 
   const char *fragment_shader =
       "#ifndef NEW_GLSL\n"
@@ -382,8 +391,7 @@ ImguiShader::ImguiShader() {
 
 #ifndef MAGNUM_TARGET_GLES
   const Version version = Context::current().supportedVersion(
-    {Version::GL330, Version::GL310, Version::GL300,
-       Version::GL210});
+      {Version::GL330, Version::GL310, Version::GL300, Version::GL210});
 #else
   const Version version =
       Context::current().supportedVersion({Version::GLES300, Version::GLES200});

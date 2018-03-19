@@ -23,13 +23,14 @@
 
 #include <Magnum/Math/Color.h>
 #include <Magnum/Renderer.h>
+#include <Magnum/Version.h>
 
 Example::Example(const Arguments &arguments)
     : Platform::Application{
           arguments, Configuration{}
                          .setTitle("Magnum Imgui port")
                          .setWindowFlags(Configuration::WindowFlag::Resizable)
-                         .setSize({1600, 900})} {}
+                         .setSize({1280, 960})} {}
 
 void Example::drawEvent() {
   Renderer::setClearColor(
