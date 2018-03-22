@@ -32,7 +32,7 @@
 #include <Magnum/TextureFormat.h>
 #include <Magnum/Version.h>
 
-#include "../imgui/imgui.h"
+#include <imgui/imgui.h>
 
 using namespace Magnum;
 

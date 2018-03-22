@@ -30,7 +30,7 @@
 // #include <MagnumImGui/MagnumImGui.h>
 // #include <MagnumImGui/imgui.h>
 #include "MagnumImGui.h"     
-#include "../imgui/imgui.h"  
+#include <imgui/imgui.h>
 
 using namespace Magnum;
 
