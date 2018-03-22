@@ -94,15 +94,25 @@ bool MagnumImGui::keyPressReleaseEvent(
     const Platform::Application::KeyEvent &event, bool value) {
   ImGuiIO &io = ImGui::GetIO();
 
-  const auto &mods = event.modifiers();
-  if (mods & Platform::Application::KeyEvent::Modifier::Shift)
-    io.KeyShift = value;
-  if (mods & Platform::Application::KeyEvent::Modifier::Ctrl)
-    io.KeyCtrl = value;
-  if (mods & Platform::Application::KeyEvent::Modifier::Alt)
-    io.KeyAlt = value;
-
   switch (event.key()) {
+  case Platform::Application::KeyEvent::Key::LeftShift:
+    io.KeyShift = value;
+    break;
+  case Platform::Application::KeyEvent::Key::RightShift:
+    io.KeyShift = value;
+    break;
+  case Platform::Application::KeyEvent::Key::LeftCtrl:
+    io.KeyCtrl = value;
+    break;
+  case Platform::Application::KeyEvent::Key::RightCtrl:
+    io.KeyCtrl = value;
+    break;
+  case Platform::Application::KeyEvent::Key::LeftAlt:
+    io.KeyAlt = value;
+    break;
+  case Platform::Application::KeyEvent::Key::RightAlt:
+    io.KeyAlt = value;
+    break;
   case Platform::Application::KeyEvent::Key::Tab:
     io.KeysDown[ImGuiKey_Tab] = value;
     break;
