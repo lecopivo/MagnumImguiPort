@@ -10,5 +10,10 @@ find_package(Magnum REQUIRED
 
 include_directories(${SDL2_INCLUDE_DIR})
 
+if(NOT EXISTS ${CMAKE_SOURCE_DIR}/imgui/imgui.h)
+  message("You forgot to include submodules!")
+  execute_process(COMMAND git submodule init COMMAND git submodule update WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+endif()
+
 add_subdirectory(src)
 
