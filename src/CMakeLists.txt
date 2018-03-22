@@ -7,9 +7,11 @@ install(FILES MagnumImGui.h DESTINATION "include/MagnumImGui")
 # Build exmaple
 add_executable(Example Example.cpp)
 
+
+find_library(IMGUI_LIB ImGui)
 target_link_libraries(Example
   Magnum::Application
   Magnum::Magnum
   Magnum::Shaders
   MagnumImGui
-  ImGui)
+  ${IMGUI_LIB})
